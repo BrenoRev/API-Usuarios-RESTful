@@ -50,4 +50,9 @@ public class IndexController {
 	}
 
 	
+	@DeleteMapping(value = "/{id}" , produces = "application/json")
+	public ResponseEntity<String> deletar(@PathVariable(value = "id") Long id) {
+		usuarioRepository.deleteById(id);
+		return new ResponseEntity<String>("Usuario com o id " +id+" deletado com sucesso", HttpStatus.OK);
+	}
 }
