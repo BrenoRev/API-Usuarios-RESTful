@@ -1,5 +1,6 @@
 package com.devrev.apirest.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,13 @@ public class IndexController {
 	public ResponseEntity<Usuario> init(@PathVariable(value = "id") Long id) {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
+		
+	}
+	
+	@GetMapping(value = "/", produces = "application/json")
+	public ResponseEntity<List<Usuario>> getAll() {
+		List<Usuario> listUsuario= usuarioRepository.findAll();
+		return new ResponseEntity<List<Usuario>>(listUsuario, HttpStatus.OK);
 		
 	}
 	
