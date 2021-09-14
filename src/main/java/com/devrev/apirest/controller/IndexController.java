@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,18 +24,21 @@ public class IndexController {
 	private UsuarioRepository usuarioRepository;
 	
 	@GetMapping(value = "/{id}" , produces = "application/json")
-	public ResponseEntity<Usuario> init(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<Usuario> getId(@PathVariable(value = "id") Long id) {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
-		
 	}
 	
 	@GetMapping(value = "/", produces = "application/json")
 	public ResponseEntity<List<Usuario>> getAll() {
 		List<Usuario> listUsuario= usuarioRepository.findAll();
 		return new ResponseEntity<List<Usuario>>(listUsuario, HttpStatus.OK);
-		
 	}
 	
+	@PostMapping(value = "/", produces = "application/json")
+	public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario){
+		usuarioRepository.save(usuario);
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+	}
 	
 }
