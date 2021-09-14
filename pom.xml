@@ -11,6 +11,7 @@
 	<groupId>com.devrev.api-rest</groupId>
 	<artifactId>Api-Rest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>Api-Rest</name>
 	<description>Microservice API Rest e Restful</description>
 	<properties>
