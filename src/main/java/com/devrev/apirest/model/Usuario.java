@@ -61,7 +61,6 @@ public class Usuario implements Serializable{
 		this.senha = senha;
 	}
 
-	
 	public List<Telefone> getTelefones() {
 		return telefones;
 	}
