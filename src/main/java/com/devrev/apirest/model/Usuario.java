@@ -61,6 +61,15 @@ public class Usuario implements Serializable{
 		this.senha = senha;
 	}
 
+	
+	public List<Telefone> getTelefones() {
+		return telefones;
+	}
+
+	public void setTelefones(List<Telefone> telefones) {
+		this.telefones = telefones;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", login=" + login + ", nome=" + nome + ", senha=" + senha + "]";
