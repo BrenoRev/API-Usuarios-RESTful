@@ -1,5 +1,6 @@
 package com.devrev.apirest.security;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,7 @@ public class JWTTokenAutenticacaoService {
 	private static final String HEADER_STRING = "Authorization";
 	
 	// Gerando token de autenticado e adicionando ao cabeçalho de resposta Http
-	public void addAuthentication(HttpServletResponse response, String username) throws Exception {
+	public void addAuthentication(HttpServletResponse response, String username) throws IOException {
 	
 		// Montagem do token
 		
