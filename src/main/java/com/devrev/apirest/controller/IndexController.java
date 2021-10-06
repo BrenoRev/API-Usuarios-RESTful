@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +47,7 @@ public class IndexController {
 		for(int pos = 0; pos < usuario.getTelefones().size(); pos++) {
 			usuario.getTelefones().get(pos).setUsuario(usuario);
 		}
+		usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 		
 		usuarioRepository.save(usuario);
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
@@ -53,6 +55,13 @@ public class IndexController {
 	
 	@PutMapping(value = "/", produces = "application/json")
 	public ResponseEntity<Usuario> atualizar(@RequestBody Usuario usuario){
+		
+		// Se a senha da alterção for diferente da cadastrada no banco de dados ele vai criptografar antes de salvar novamente
+		Usuario usuarioAntigo = usuarioRepository.getById(usuario.getId());
+		if(!new BCryptPasswordEncoder().matches(usuarioAntigo.getSenha(), usuario.getSenha())) {
+			usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
+		}
+
 		usuarioRepository.save(usuario);
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
