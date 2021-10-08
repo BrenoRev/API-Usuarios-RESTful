@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +26,7 @@ import com.devrev.apirest.repository.UsuarioRepository;
 @RequestMapping("/usuario")
 @RestController
 @CrossOrigin(origins =  "*")
+@EnableCaching
 public class IndexController {
 
 	@Autowired
@@ -34,8 +38,16 @@ public class IndexController {
 		return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
 	}
 	
+	/* Vamos Supor que o carregamento de usuario seja um processo lento
+	 e queremos controler ele com cache par agilizar o processo */
+	
 	@GetMapping(value = "/", produces = "application/json")
-	public ResponseEntity<List<Usuario>> getAll() {
+	
+	// Limpa o cache conforme necessário pra não estourar memória
+	@CacheEvict(value="allusers", allEntries = true)
+	// Atualiza o cache quando tiver modificações
+	@CachePut("allusers")
+	public ResponseEntity<List<Usuario>> getAll() throws InterruptedException {
 		List<Usuario> listUsuario= usuarioRepository.findAll();
 		return new ResponseEntity<List<Usuario>>(listUsuario, HttpStatus.OK);
 	}
