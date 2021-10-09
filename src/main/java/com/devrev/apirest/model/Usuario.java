@@ -53,6 +53,16 @@ public class Usuario implements UserDetails{
 	foreignKey = @ForeignKey (name="role_fk" , value = ConstraintMode.CONSTRAINT)))
 	private List<Role> roles; /* Os Acessos */ 
 
+	private String token = "";
+	
+	public String getToken() {
+		return token;
+	}
+	
+	public void setToken(String token) {
+		this.token = token;
+	}
+	
 	/* Autorizações, os acessos do usuário ROLE_ADMIN ou ROLE_VISITANTE e etc.*/ 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

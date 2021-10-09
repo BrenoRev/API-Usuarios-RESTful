@@ -8,6 +8,8 @@ import javax.persistence.SequenceGenerator;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @SequenceGenerator(name = "seq_role", sequenceName = "seq_role", allocationSize = 1, initialValue = 1)
 public class Role  implements GrantedAuthority{
@@ -24,6 +26,7 @@ public class Role  implements GrantedAuthority{
 		return this.nomeRole;
 	}
 	
+	@JsonIgnore
 	public Long getId() {
 		return id;
 	}
@@ -31,7 +34,8 @@ public class Role  implements GrantedAuthority{
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
+	@JsonIgnore
 	public String getNomeRole() {
 		return nomeRole;
 	}
