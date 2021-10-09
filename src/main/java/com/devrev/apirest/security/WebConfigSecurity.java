@@ -2,6 +2,7 @@ package com.devrev.apirest.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,6 +31,9 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
 		// Ativando a permissão para acesso a página inicial do sistema ex: sistema.com.br/index.html
 		.disable().authorizeRequests().antMatchers("/").permitAll()
 		.antMatchers("/index").permitAll()
+		
+		// Liberando as várias opções da API
+		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		
 		// URL DE Logout - Redireciona após o user deslogar do sistema
 		.anyRequest().authenticated().and().logout().logoutSuccessUrl("/index")
