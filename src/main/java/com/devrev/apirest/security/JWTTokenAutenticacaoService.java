@@ -15,7 +15,6 @@ import com.devrev.apirest.ApplicationContextLoad;
 import com.devrev.apirest.model.Usuario;
 import com.devrev.apirest.repository.UsuarioRepository;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -24,8 +23,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JWTTokenAutenticacaoService {
 
 	// Tempo de validade do Token de 1 dia
-	private static final long EXPIRATION_TIME = 1;
-	//	private static final long EXPIRATION_TIME = 86400000;
+	private static final long EXPIRATION_TIME = 86400000;
 	
 	// Uma senha única para compor a autenticação
 	private static final String SECRET = "SenhaSecreta---*-*xs-x*s-x*-sx*-s";

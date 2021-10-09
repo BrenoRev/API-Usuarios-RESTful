@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devrev.apirest.model.Usuario;
+import com.devrev.apirest.model.UsuarioDTO;
 import com.devrev.apirest.repository.UsuarioRepository;
 
 @RequestMapping("/usuario")
@@ -33,9 +34,9 @@ public class IndexController {
 	private UsuarioRepository usuarioRepository;
 	
 	@GetMapping(value = "/{id}" , produces = "application/json")
-	public ResponseEntity<Usuario> getId(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<UsuarioDTO> getId(@PathVariable(value = "id") Long id) {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
-		return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
+		return new ResponseEntity<UsuarioDTO>(new UsuarioDTO(usuario.get()), HttpStatus.OK);
 	}
 	
 	/* Vamos Supor que o carregamento de usuario seja um processo lento
