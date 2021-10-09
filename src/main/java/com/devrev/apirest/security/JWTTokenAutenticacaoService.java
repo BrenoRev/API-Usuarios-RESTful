@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.devrev.apirest.ApplicationContextLoad;
 import com.devrev.apirest.model.Usuario;
 import com.devrev.apirest.repository.UsuarioRepository;
+import com.devrev.apirest.service.ImplementacaoUserDetailsService;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -53,6 +54,10 @@ public class JWTTokenAutenticacaoService {
 		
 		// Adiciona no cabeçalho HTTP
 		response.addHeader(HEADER_STRING, token); // Authorization: Bearer SenhaSecreta---*-*xs-x*s-x*-sx*-s
+		
+		// Atualiza a Token do usuario no banco de dados
+		ApplicationContextLoad.getApplicationContext()
+		  .getBean(ImplementacaoUserDetailsService.class).atualizaToken(JWT, username);
 		
 		// Liberando resposta para portas diferentes que usam a API ou caso Clientes WEB
 		liberacaoCors(response);
