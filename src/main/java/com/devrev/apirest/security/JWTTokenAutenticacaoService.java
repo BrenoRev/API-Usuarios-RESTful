@@ -15,6 +15,7 @@ import com.devrev.apirest.ApplicationContextLoad;
 import com.devrev.apirest.model.Usuario;
 import com.devrev.apirest.repository.UsuarioRepository;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -23,7 +24,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JWTTokenAutenticacaoService {
 
 	// Tempo de validade do Token de 1 dia
-	private static final long EXPIRATION_TIME = 86400000;
+	private static final long EXPIRATION_TIME = 1;
+	//	private static final long EXPIRATION_TIME = 86400000;
 	
 	// Uma senha única para compor a autenticação
 	private static final String SECRET = "SenhaSecreta---*-*xs-x*s-x*-sx*-s";
@@ -62,8 +64,9 @@ public class JWTTokenAutenticacaoService {
 	}
 	
 	// Retorna o usuário validado com token ou caso não seja válido retorna null
-	public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response) {
+	public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
+		try {
 		// Pega o token enviado no cabeçalho HTTP
 		String token = request.getHeader(HEADER_STRING);
 		
@@ -101,6 +104,9 @@ public class JWTTokenAutenticacaoService {
 				}
 			}
 		}
+	}catch(io.jsonwebtoken.ExpiredJwtException e) {
+		response.getOutputStream().println("Seu TOKEN esta expirado, faca o login novamente!");
+	}
 		liberacaoCors(response);
 		return null; // Não existe token validado
 	}
