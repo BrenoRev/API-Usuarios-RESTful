@@ -105,7 +105,7 @@
 [PUT] Atualizar um usuário pelo ID - https://api-restrevdev.herokuapp.com/api-rest/usuario/?id
  <details>
     <br>
-    <summary><b>JSON</b></summary>
+    <summary><b>JSON DE RETORNO</b></summary>
 {
 <br>
     &nbsp "id": 2, 
@@ -136,4 +136,5 @@
  <hr>
  <br>
 [DELETE] Excluir um usuário pelo ID - https://api-restrevdev.herokuapp.com/api-rest/usuario/?id
- <No Return Statement>
+
+ !No Return Statement
