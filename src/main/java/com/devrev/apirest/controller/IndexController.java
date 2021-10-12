@@ -1,5 +1,6 @@
 package com.devrev.apirest.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,12 +49,17 @@ public class IndexController {
 	@CacheEvict(value="allusers", allEntries = true)
 	// Atualiza o cache quando tiver modificações
 	@CachePut("allusers")
-	public ResponseEntity<List<Usuario>> getAll() throws InterruptedException {
+	public ResponseEntity<List<UsuarioDTO>> getAll() throws InterruptedException {
+		
 		List<Usuario> listUsuario= usuarioRepository.findAll();
-		return new ResponseEntity<List<Usuario>>(listUsuario, HttpStatus.OK);
+		List<UsuarioDTO> listarDTO = new ArrayList<>();
+		listUsuario.forEach((user) -> {
+			listarDTO.add(new UsuarioDTO(user.getLogin(), user.getNome(), user.getTelefones()));
+		});
+		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/", produces = "application/json")
+	@PostMapping(value = "/register", produces = "application/json")
 	public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario){
 		
 		// Amarrando a foreign key do usuario no telefone

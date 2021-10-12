@@ -23,6 +23,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter{
 		// Configurando o gerenciador de Autenticação
 	protected JWTLoginFilter(String url, AuthenticationManager authenticationManager) {
 		
+
 		// Obriga a autenticar a URL
 		super(new AntPathRequestMatcher(url));
 		

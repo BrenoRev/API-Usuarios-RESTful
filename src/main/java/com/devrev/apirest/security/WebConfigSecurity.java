@@ -29,7 +29,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
 		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 		
 		// Ativando a permissão para acesso a página inicial do sistema ex: sistema.com.br/index.html
-		.disable().authorizeRequests().antMatchers("/").permitAll()
+		.disable().authorizeRequests().antMatchers("/usuario/register").permitAll()
 		.antMatchers("/index").permitAll()
 		
 		// Liberando as várias opções da API

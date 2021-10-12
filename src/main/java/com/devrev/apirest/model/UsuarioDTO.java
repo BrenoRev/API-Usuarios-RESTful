@@ -15,7 +15,14 @@ public class UsuarioDTO implements Serializable{
 		this.userLogin = usuario.getLogin();
 		this.userNome = usuario.getNome();
 		this.userTelefones = usuario.getTelefones();
-		
+	}
+	
+	// Padrão DTO para imprimir todos
+	
+	public UsuarioDTO(String login, String nome, List<Telefone> telefones) {
+		this.userLogin = login;
+		this.userNome = nome;
+		this.userTelefones = telefones;
 	}
 	
 	public String getUserLogin() {
