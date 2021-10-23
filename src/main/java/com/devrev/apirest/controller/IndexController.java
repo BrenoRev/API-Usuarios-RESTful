@@ -54,7 +54,7 @@ public class IndexController {
 		List<Usuario> listUsuario= usuarioRepository.findAll();
 		List<UsuarioDTO> listarDTO = new ArrayList<>();
 		listUsuario.forEach((user) -> {
-			listarDTO.add(new UsuarioDTO(user.getLogin(), user.getNome(), user.getTelefones()));
+			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getTelefones()));
 		});
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}

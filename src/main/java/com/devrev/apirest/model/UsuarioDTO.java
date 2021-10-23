@@ -6,12 +6,13 @@ import java.util.List;
 public class UsuarioDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	private Long id;
 	private String userLogin;
 	private String userNome;
 	private List<Telefone> userTelefones;
 	
 	public UsuarioDTO(Usuario usuario) {
-		
+		this.id = usuario.getId();
 		this.userLogin = usuario.getLogin();
 		this.userNome = usuario.getNome();
 		this.userTelefones = usuario.getTelefones();
@@ -19,12 +20,22 @@ public class UsuarioDTO implements Serializable{
 	
 	// Padrão DTO para imprimir todos
 	
-	public UsuarioDTO(String login, String nome, List<Telefone> telefones) {
+	public UsuarioDTO(Long id,String login, String nome, List<Telefone> telefones) {
+		this.id = id;
 		this.userLogin = login;
 		this.userNome = nome;
 		this.userTelefones = telefones;
 	}
 	
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getUserLogin() {
 		return userLogin;
 	}
