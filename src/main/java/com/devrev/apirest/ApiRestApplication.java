@@ -17,7 +17,7 @@ public class ApiRestApplication implements WebMvcConfigurer{
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("**")
-		.allowedMethods("POST", "PUT", "GET", "DELETE")
+		.allowedMethods("POST", "PUT", "GET", "DELETE", "PATCH")
 		.allowedOrigins("*");
 	}
 	
