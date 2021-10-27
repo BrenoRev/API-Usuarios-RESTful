@@ -34,6 +34,9 @@ public class IndexController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
+	//@Autowired
+	//private UsuarioService usuarioService;
+	
 	@GetMapping(value = "/{id}" , produces = "application/json")
 	public ResponseEntity<UsuarioDTO> getId(@PathVariable(value = "id") Long id) {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
@@ -90,5 +93,16 @@ public class IndexController {
 	public ResponseEntity<String> deletar(@PathVariable(value = "id") Long id) {
 		usuarioRepository.deleteById(id);
 		return new ResponseEntity<String>("Usuario com o id " +id+" deletado com sucesso", HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/name/{nome}", produces = "application/json")
+	public ResponseEntity<List<UsuarioDTO>> usuarioPorNome(@PathVariable("nome") String nome) throws InterruptedException {
+		
+		List<Usuario> listUsuario= usuarioRepository.findUserByName(nome);
+		List<UsuarioDTO> listarDTO = new ArrayList<>();
+		listUsuario.forEach((user) -> {
+			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getTelefones()));
+		});
+		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}
 }
