@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devrev.apirest.model.Usuario;
 import com.devrev.apirest.model.UsuarioDTO;
 import com.devrev.apirest.repository.UsuarioRepository;
+import com.devrev.apirest.service.ImplementacaoUserDetailsService;
 
 @RequestMapping("/usuario")
 @RestController
@@ -35,8 +36,8 @@ public class IndexController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	//@Autowired
-	//private UsuarioService usuarioService;
+	@Autowired
+	private ImplementacaoUserDetailsService usuarioService;
 	
 	@GetMapping(value = "/{id}" , produces = "application/json")
 	public ResponseEntity<UsuarioDTO> getId(@PathVariable(value = "id") Long id) {
@@ -73,6 +74,10 @@ public class IndexController {
 		usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 		
 		usuarioRepository.save(usuario);
+		
+		usuarioService.insereAcessoPadrao(usuario.getId());
+		
+		
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
 	
