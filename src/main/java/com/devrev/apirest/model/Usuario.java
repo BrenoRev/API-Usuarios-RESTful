@@ -39,7 +39,7 @@ public class Usuario implements UserDetails{
 	
 	private String senha;
 	
-	@OneToMany(mappedBy="usuario", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="usuario", orphanRemoval = false, cascade= CascadeType.ALL , fetch = FetchType.LAZY)
 	private List<Telefone> telefones = new ArrayList<Telefone>();
 	
 	@OneToMany(fetch = FetchType.EAGER)

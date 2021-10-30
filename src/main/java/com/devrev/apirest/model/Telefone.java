@@ -3,6 +3,7 @@ package com.devrev.apirest.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +26,7 @@ public class Telefone implements Serializable{
 	@JsonIgnore
 	@SuppressWarnings("deprecation")
 	@org.hibernate.annotations.ForeignKey(name = "usuario_id")
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false , cascade = CascadeType.ALL)
 	private Usuario usuario;
 
 	public Long getId() {

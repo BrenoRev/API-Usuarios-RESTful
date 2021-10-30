@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devrev.apirest.model.Usuario;
 import com.devrev.apirest.model.UsuarioDTO;
+import com.devrev.apirest.repository.TelefoneRepository;
 import com.devrev.apirest.repository.UsuarioRepository;
 import com.devrev.apirest.service.ImplementacaoUserDetailsService;
 
@@ -35,6 +36,9 @@ public class IndexController {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private TelefoneRepository telefoneRepository;
 	
 	@Autowired
 	private ImplementacaoUserDetailsService usuarioService;
@@ -98,8 +102,14 @@ public class IndexController {
 	public ResponseEntity<Usuario> atualizarParcial(@RequestBody Usuario usuario){
 		
 		Usuario usuarioAntigo = usuarioRepository.getById(usuario.getId());
+		usuarioAntigo.setId(usuario.getId());
 		usuarioAntigo.setLogin(usuario.getLogin());
 		usuarioAntigo.setNome(usuario.getNome());
+		usuario.getTelefones().forEach((x) -> {
+			x.setUsuario(usuario);
+		});
+		usuarioAntigo.setTelefones(usuario.getTelefones());
+		
 		
 		usuarioRepository.save(usuarioAntigo);
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
@@ -121,5 +131,11 @@ public class IndexController {
 			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getTelefones()));
 		});
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value = "/removerTelefone/{id}", produces = "application/text")
+	public ResponseEntity<String> deleteTelefone(@PathVariable("id") Long id) {
+		telefoneRepository.deleteById(id);
+		return new ResponseEntity<String>("Telefone com o id " +id+" deletado com sucesso", HttpStatus.OK);
 	}
 }
