@@ -63,7 +63,7 @@ public class IndexController {
 		List<Usuario> listUsuario= usuarioRepository.findAll();
 		List<UsuarioDTO> listarDTO = new ArrayList<>();
 		listUsuario.forEach((user) -> {
-			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getTelefones()));
+			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getTelefones(), user.getCpf()));
 		});
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}
@@ -105,13 +105,13 @@ public class IndexController {
 		usuarioAntigo.setId(usuario.getId());
 		usuarioAntigo.setLogin(usuario.getLogin());
 		usuarioAntigo.setNome(usuario.getNome());
+		usuarioAntigo.setCpf(usuario.getCpf());
 		usuario.getTelefones().forEach((x) -> {
 			x.setUsuario(usuario);
 		});
 		usuarioAntigo.setTelefones(usuario.getTelefones());
 		
-		
-		usuarioRepository.save(usuarioAntigo);
+		usuarioRepository.saveAndFlush(usuarioAntigo);
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
 
@@ -128,7 +128,7 @@ public class IndexController {
 		List<Usuario> listUsuario= usuarioRepository.findUserByName(nome);
 		List<UsuarioDTO> listarDTO = new ArrayList<>();
 		listUsuario.forEach((user) -> {
-			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getTelefones()));
+			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getTelefones(), user.getCpf()));
 		});
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}

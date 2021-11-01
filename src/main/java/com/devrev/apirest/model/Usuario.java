@@ -19,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -39,7 +40,10 @@ public class Usuario implements UserDetails{
 	
 	private String senha;
 	
-	@OneToMany(mappedBy="usuario", orphanRemoval = false, cascade= CascadeType.ALL , fetch = FetchType.LAZY)
+	@CPF(message= "CPF inválido")
+	private String cpf;
+	
+	@OneToMany(mappedBy="usuario", orphanRemoval = true, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	private List<Telefone> telefones = new ArrayList<Telefone>();
 	
 	@OneToMany(fetch = FetchType.EAGER)
@@ -106,6 +110,14 @@ public class Usuario implements UserDetails{
 	}	
 	
 	
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
 	public Long getId() {
 		return id;
 	}
