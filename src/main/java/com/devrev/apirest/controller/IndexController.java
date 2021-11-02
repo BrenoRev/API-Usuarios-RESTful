@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,6 +46,7 @@ public class IndexController {
 	@Autowired
 	private ImplementacaoUserDetailsService usuarioService;
 	
+	
 	@GetMapping(value = "/{id}" , produces = "application/json")
 	public ResponseEntity<UsuarioDTO> getId(@PathVariable(value = "id") Long id) {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
@@ -68,6 +72,16 @@ public class IndexController {
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}
 	
+	
+	@GetMapping(value = "/page/{pagina}", produces = "application/json")
+	public ResponseEntity<Page<Usuario>> getAll(@PathVariable("pagina") int pagina) throws InterruptedException {
+		
+		PageRequest page = PageRequest.of(pagina, 5, Sort.by("nome"));
+		Page<Usuario> listarDTO = usuarioRepository.findAll(page);
+		
+		return new ResponseEntity<Page<Usuario>>(listarDTO, HttpStatus.OK);
+	}
+
 	@PostMapping(value = "/register", produces = "application/json")
 	public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario){
 		
@@ -106,12 +120,12 @@ public class IndexController {
 		usuarioAntigo.setLogin(usuario.getLogin());
 		usuarioAntigo.setNome(usuario.getNome());
 		usuarioAntigo.setCpf(usuario.getCpf());
-		usuario.getTelefones().forEach((x) -> {
-			x.setUsuario(usuario);
-		});
-		usuarioAntigo.setTelefones(usuario.getTelefones());
+		//usuario.getTelefones().forEach((x) -> {
+		//	x.setUsuario(usuario);
+		//});
+		//usuarioAntigo.setTelefones(usuario.getTelefones());
 		
-		usuarioRepository.saveAndFlush(usuarioAntigo);
+		usuarioRepository.save(usuarioAntigo);
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
 
