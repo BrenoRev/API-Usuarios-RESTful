@@ -3,14 +3,18 @@ package com.devrev.apirest.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -75,8 +79,14 @@ public class IndexController {
 	
 	@GetMapping(value = "/page/{pagina}", produces = "application/json")
 	public ResponseEntity<Page<Usuario>> getAll(@PathVariable("pagina") int pagina) throws InterruptedException {
+		int size = 5;
 		
-		PageRequest page = PageRequest.of(pagina, 5, Sort.by("nome"));
+		if(pagina  == 0) {
+			size = 6;
+		}else {
+			size = 5;
+		}
+		PageRequest page = PageRequest.of(pagina, size, Sort.by("nome"));
 		Page<Usuario> listarDTO = usuarioRepository.findAll(page);
 		
 		return new ResponseEntity<Page<Usuario>>(listarDTO, HttpStatus.OK);
@@ -151,5 +161,18 @@ public class IndexController {
 	public ResponseEntity<String> deleteTelefone(@PathVariable("id") Long id) {
 		telefoneRepository.deleteById(id);
 		return new ResponseEntity<String>("Telefone com o id " +id+" deletado com sucesso", HttpStatus.OK);
+	}
+	
+	/*END-POINT consulta de usuário por nome*/
+	@GetMapping(value = "/name/{nome}/page/{page}", produces = "application/json")
+	@CachePut("cacheusuarios")
+	public ResponseEntity<Page<Usuario>> usuarioPorNomePage (@PathVariable("nome") String nome, @PathVariable("page") int page) throws InterruptedException{
+		
+		PageRequest pageRequest = PageRequest.of(page, 5, Sort.by("nome"));
+		List<Usuario> all = usuarioRepository.findUserByName(nome);
+		Page<Usuario> list = new PageImpl<Usuario>(all, pageRequest, 5);
+		
+		return new ResponseEntity<Page<Usuario>>(list, HttpStatus.OK);
+		
 	}
 }
