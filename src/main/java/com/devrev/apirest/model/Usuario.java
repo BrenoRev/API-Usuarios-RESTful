@@ -1,6 +1,7 @@
 package com.devrev.apirest.model;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,12 +16,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -41,6 +47,10 @@ public class Usuario implements UserDetails{
 	@CPF(message= "CPF inválido")
 	private String cpf;
 	
+	@JsonFormat(pattern="dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
+	private Date dataNascimento;
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	// Criar uma tabela no banco de dados com o id do usuario e o id da role que ele tem
@@ -146,6 +156,14 @@ public class Usuario implements UserDetails{
 		this.senha = senha;
 	}
 
+
+	public Date getDateNascimento() {
+		return dateNascimento;
+	}
+
+	public void setDateNascimento(Date dateNascimento) {
+		this.dateNascimento = dateNascimento;
+	}
 
 	@Override
 	public String toString() {
