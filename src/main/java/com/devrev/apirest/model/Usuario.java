@@ -1,11 +1,9 @@
 package com.devrev.apirest.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -43,8 +41,6 @@ public class Usuario implements UserDetails{
 	@CPF(message= "CPF inválido")
 	private String cpf;
 	
-	@OneToMany(mappedBy="usuario", orphanRemoval = true, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	private List<Telefone> telefones = new ArrayList<Telefone>();
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	// Criar uma tabela no banco de dados com o id do usuario e o id da role que ele tem
@@ -150,13 +146,6 @@ public class Usuario implements UserDetails{
 		this.senha = senha;
 	}
 
-	public List<Telefone> getTelefones() {
-		return telefones;
-	}
-
-	public void setTelefones(List<Telefone> telefones) {
-		this.telefones = telefones;
-	}
 
 	@Override
 	public String toString() {

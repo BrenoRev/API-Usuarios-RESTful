@@ -3,7 +3,6 @@ package com.devrev.apirest.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -12,9 +11,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devrev.apirest.model.Usuario;
 import com.devrev.apirest.model.UsuarioDTO;
-import com.devrev.apirest.repository.TelefoneRepository;
 import com.devrev.apirest.repository.UsuarioRepository;
 import com.devrev.apirest.service.ImplementacaoUserDetailsService;
 
@@ -44,8 +40,6 @@ public class IndexController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	@Autowired
-	private TelefoneRepository telefoneRepository;
 	
 	@Autowired
 	private ImplementacaoUserDetailsService usuarioService;
@@ -71,7 +65,7 @@ public class IndexController {
 		List<Usuario> listUsuario= usuarioRepository.findAll();
 		List<UsuarioDTO> listarDTO = new ArrayList<>();
 		listUsuario.forEach((user) -> {
-			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getTelefones(), user.getCpf()));
+			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf()));
 		});
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}
@@ -95,16 +89,11 @@ public class IndexController {
 	@PostMapping(value = "/register", produces = "application/json")
 	public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario){
 		
-		// Amarrando a foreign key do usuario no telefone
-		for(int pos = 0; pos < usuario.getTelefones().size(); pos++) {
-			usuario.getTelefones().get(pos).setUsuario(usuario);
-		}
 		usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 		
 		usuarioRepository.save(usuario);
 		
 		usuarioService.insereAcessoPadrao(usuario.getId());
-		
 		
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
@@ -130,10 +119,6 @@ public class IndexController {
 		usuarioAntigo.setLogin(usuario.getLogin());
 		usuarioAntigo.setNome(usuario.getNome());
 		usuarioAntigo.setCpf(usuario.getCpf());
-		//usuario.getTelefones().forEach((x) -> {
-		//	x.setUsuario(usuario);
-		//});
-		//usuarioAntigo.setTelefones(usuario.getTelefones());
 		
 		usuarioRepository.save(usuarioAntigo);
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
@@ -152,17 +137,12 @@ public class IndexController {
 		List<Usuario> listUsuario= usuarioRepository.findUserByName(nome);
 		List<UsuarioDTO> listarDTO = new ArrayList<>();
 		listUsuario.forEach((user) -> {
-			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getTelefones(), user.getCpf()));
+			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf()));
 		});
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}
 	
-	@DeleteMapping(value = "/removerTelefone/{id}", produces = "application/text")
-	public ResponseEntity<String> deleteTelefone(@PathVariable("id") Long id) {
-		telefoneRepository.deleteById(id);
-		return new ResponseEntity<String>("Telefone com o id " +id+" deletado com sucesso", HttpStatus.OK);
-	}
-	
+
 	/*END-POINT consulta de usuário por nome*/
 	@GetMapping(value = "/name/{nome}/page/{page}", produces = "application/json")
 	@CachePut("cacheusuarios")

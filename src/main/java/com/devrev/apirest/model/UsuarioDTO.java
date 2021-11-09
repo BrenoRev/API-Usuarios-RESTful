@@ -1,9 +1,6 @@
 package com.devrev.apirest.model;
 
 import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.Entity;
 
 public class UsuarioDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -13,23 +10,20 @@ public class UsuarioDTO implements Serializable{
 	private String userNome;
 	private String userCpf;
 	
-	private List<Telefone> userTelefones;
 	
 	public UsuarioDTO(Usuario usuario) {
 		this.id = usuario.getId();
 		this.userLogin = usuario.getLogin();
 		this.userNome = usuario.getNome();
-		this.userTelefones = usuario.getTelefones();
 		this.userCpf = usuario.getCpf();
 	}
 	
 	// Padrão DTO para imprimir todos
 	
-	public UsuarioDTO(Long id,String login, String nome, List<Telefone> telefones, String cpf) {
+	public UsuarioDTO(Long id,String login, String nome, String cpf) {
 		this.id = id;
 		this.userLogin = login;
 		this.userNome = nome;
-		this.userTelefones = telefones;
 		this.userCpf = cpf;
 	}
 	
@@ -61,12 +55,6 @@ public class UsuarioDTO implements Serializable{
 	}
 	public void setUserNome(String userNome) {
 		this.userNome = userNome;
-	}
-	public List<Telefone> getUserTelefones() {
-		return userTelefones;
-	}
-	public void setUserTelefones(List<Telefone> userTelefones) {
-		this.userTelefones = userTelefones;
 	}
 	
 	
