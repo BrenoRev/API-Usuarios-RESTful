@@ -1,6 +1,15 @@
 package com.devrev.apirest.model;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class UsuarioDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -10,24 +19,39 @@ public class UsuarioDTO implements Serializable{
 	private String userNome;
 	private String userCpf;
 	
+	@JsonFormat(pattern="dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
+	private Date userDataNascimento;
 	
 	public UsuarioDTO(Usuario usuario) {
 		this.id = usuario.getId();
 		this.userLogin = usuario.getLogin();
 		this.userNome = usuario.getNome();
 		this.userCpf = usuario.getCpf();
+		this.userDataNascimento = usuario.getDateNascimento();
 	}
 	
 	// Padrão DTO para imprimir todos
 	
-	public UsuarioDTO(Long id,String login, String nome, String cpf) {
+	public UsuarioDTO(Long id,String login, String nome, String cpf, Date dataNascimento) {
 		this.id = id;
 		this.userLogin = login;
 		this.userNome = nome;
 		this.userCpf = cpf;
+		this.userDataNascimento = dataNascimento;
 	}
 	
 	
+	
+	public Date getDataNascimento() {
+		return userDataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.userDataNascimento = dataNascimento;
+	}
+
 	public String getUserCpf() {
 		return userCpf;
 	}

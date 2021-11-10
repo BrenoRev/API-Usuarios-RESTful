@@ -65,7 +65,7 @@ public class IndexController {
 		List<Usuario> listUsuario= usuarioRepository.findAll();
 		List<UsuarioDTO> listarDTO = new ArrayList<>();
 		listUsuario.forEach((user) -> {
-			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf()));
+			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf(), user.getDateNascimento()));
 		});
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}
@@ -90,7 +90,6 @@ public class IndexController {
 	public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario){
 		
 		usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
-		
 		usuarioRepository.save(usuario);
 		
 		usuarioService.insereAcessoPadrao(usuario.getId());
@@ -137,7 +136,7 @@ public class IndexController {
 		List<Usuario> listUsuario= usuarioRepository.findUserByName(nome);
 		List<UsuarioDTO> listarDTO = new ArrayList<>();
 		listUsuario.forEach((user) -> {
-			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf()));
+			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf(), user.getDateNascimento()));
 		});
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}

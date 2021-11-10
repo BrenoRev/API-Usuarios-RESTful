@@ -114,8 +114,7 @@ public class Usuario implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}	
-	
-	
+
 	public String getCpf() {
 		return cpf;
 	}
@@ -158,11 +157,11 @@ public class Usuario implements UserDetails{
 
 
 	public Date getDateNascimento() {
-		return dateNascimento;
+		return dataNascimento;
 	}
 
 	public void setDateNascimento(Date dateNascimento) {
-		this.dateNascimento = dateNascimento;
+		this.dataNascimento = dateNascimento;
 	}
 
 	@Override
