@@ -1,5 +1,7 @@
 package com.devrev.apirest.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -49,12 +51,12 @@ public class Usuario implements UserDetails{
 	private String cpf;
 	
 	@JsonFormat(pattern="dd/MM/yyyy")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
-	private Date dataNascimento;
+	private LocalDate dataNascimento;
 	
 	@ManyToOne
 	private Profissao profissao;
+	
+	private BigDecimal salario;
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	// Criar uma tabela no banco de dados com o id do usuario e o id da role que ele tem
@@ -120,7 +122,14 @@ public class Usuario implements UserDetails{
 	}	
 
 	
-	
+	public BigDecimal getSalario() {
+		return salario;
+	}
+
+	public void setSalario(BigDecimal salario) {
+		this.salario = salario;
+	}
+
 	public Profissao getProfissao() {
 		return profissao;
 	}
@@ -169,11 +178,11 @@ public class Usuario implements UserDetails{
 		this.senha = senha;
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 

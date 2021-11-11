@@ -1,6 +1,7 @@
 package com.devrev.apirest.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Temporal;
@@ -22,7 +23,7 @@ public class UsuarioDTO implements Serializable{
 	@JsonFormat(pattern="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
-	private Date userDataNascimento;
+	private LocalDate userDataNascimento;
 	
 	private Profissao profissao;
 	
@@ -37,7 +38,7 @@ public class UsuarioDTO implements Serializable{
 	
 	// Padrão DTO para imprimir todos
 	
-	public UsuarioDTO(Long id,String login, String nome, String cpf, Date dataNascimento, Profissao profissao) {
+	public UsuarioDTO(Long id,String login, String nome, String cpf, LocalDate dataNascimento, Profissao profissao) {
 		this.id = id;
 		this.userLogin = login;
 		this.userNome = nome;
@@ -48,11 +49,11 @@ public class UsuarioDTO implements Serializable{
 	
 	
 	
-	public Date getUserDataNascimento() {
+	public LocalDate getUserDataNascimento() {
 		return userDataNascimento;
 	}
 
-	public void setUserDataNascimento(Date userDataNascimento) {
+	public void setUserDataNascimento(LocalDate userDataNascimento) {
 		this.userDataNascimento = userDataNascimento;
 	}
 
