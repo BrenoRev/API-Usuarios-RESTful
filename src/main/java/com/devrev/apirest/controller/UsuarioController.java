@@ -95,7 +95,7 @@ public class UsuarioController {
 		
 		usuarioService.insereAcessoPadrao(usuario.getId());
 		
-		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK); 
 	}
 	
 	@PutMapping(value = "/", produces = "application/json")

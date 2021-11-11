@@ -3,10 +3,10 @@ package com.devrev.apirest.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -19,13 +19,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.br.CPF;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -53,7 +49,8 @@ public class Usuario implements UserDetails{
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private LocalDate dataNascimento;
 	
-	@ManyToOne
+	
+	@ManyToOne(cascade=CascadeType.MERGE)
 	private Profissao profissao;
 	
 	private BigDecimal salario;
