@@ -24,32 +24,44 @@ public class UsuarioDTO implements Serializable{
 	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
 	private Date userDataNascimento;
 	
+	private Profissao profissao;
+	
 	public UsuarioDTO(Usuario usuario) {
 		this.id = usuario.getId();
 		this.userLogin = usuario.getLogin();
 		this.userNome = usuario.getNome();
 		this.userCpf = usuario.getCpf();
-		this.userDataNascimento = usuario.getDateNascimento();
+		this.userDataNascimento = usuario.getDataNascimento();
+		this.profissao = usuario.getProfissao();
 	}
 	
 	// Padrão DTO para imprimir todos
 	
-	public UsuarioDTO(Long id,String login, String nome, String cpf, Date dataNascimento) {
+	public UsuarioDTO(Long id,String login, String nome, String cpf, Date dataNascimento, Profissao profissao) {
 		this.id = id;
 		this.userLogin = login;
 		this.userNome = nome;
 		this.userCpf = cpf;
 		this.userDataNascimento = dataNascimento;
+		this.profissao = profissao;
 	}
 	
 	
 	
-	public Date getDataNascimento() {
+	public Date getUserDataNascimento() {
 		return userDataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
-		this.userDataNascimento = dataNascimento;
+	public void setUserDataNascimento(Date userDataNascimento) {
+		this.userDataNascimento = userDataNascimento;
+	}
+
+	public Profissao getProfissao() {
+		return profissao;
+	}
+
+	public void setProfissao(Profissao profissao) {
+		this.profissao = profissao;
 	}
 
 	public String getUserCpf() {

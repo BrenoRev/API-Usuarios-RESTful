@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.devrev.apirest.model.Profissao;
 import com.devrev.apirest.model.Usuario;
 import com.devrev.apirest.model.UsuarioDTO;
 import com.devrev.apirest.repository.UsuarioRepository;
@@ -35,7 +36,7 @@ import com.devrev.apirest.service.ImplementacaoUserDetailsService;
 @RestController
 @CrossOrigin(origins =  "*")
 @EnableCaching
-public class IndexController {
+public class UsuarioController {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -65,7 +66,7 @@ public class IndexController {
 		List<Usuario> listUsuario= usuarioRepository.findAll();
 		List<UsuarioDTO> listarDTO = new ArrayList<>();
 		listUsuario.forEach((user) -> {
-			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf(), user.getDateNascimento()));
+			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf(), user.getDataNascimento(), user.getProfissao()));
 		});
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}
@@ -118,7 +119,10 @@ public class IndexController {
 		usuarioAntigo.setLogin(usuario.getLogin());
 		usuarioAntigo.setNome(usuario.getNome());
 		usuarioAntigo.setCpf(usuario.getCpf());
-		
+		Profissao p = new Profissao();
+		p.setId(usuario.getProfissao().getId());
+		p.setDescricao(usuario.getProfissao().getDescricao());
+		usuarioAntigo.setProfissao(p);
 		usuarioRepository.save(usuarioAntigo);
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
@@ -136,7 +140,7 @@ public class IndexController {
 		List<Usuario> listUsuario= usuarioRepository.findUserByName(nome);
 		List<UsuarioDTO> listarDTO = new ArrayList<>();
 		listUsuario.forEach((user) -> {
-			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf(), user.getDateNascimento()));
+			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf(), user.getDataNascimento(), user.getProfissao()));
 		});
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}

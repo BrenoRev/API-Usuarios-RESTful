@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,6 +52,9 @@ public class Usuario implements UserDetails{
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
 	private Date dataNascimento;
+	
+	@ManyToOne
+	private Profissao profissao;
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	// Criar uma tabela no banco de dados com o id do usuario e o id da role que ele tem
@@ -115,6 +119,16 @@ public class Usuario implements UserDetails{
 		return true;
 	}	
 
+	
+	
+	public Profissao getProfissao() {
+		return profissao;
+	}
+
+	public void setProfissao(Profissao profissao) {
+		this.profissao = profissao;
+	}
+
 	public String getCpf() {
 		return cpf;
 	}
@@ -155,13 +169,12 @@ public class Usuario implements UserDetails{
 		this.senha = senha;
 	}
 
-
-	public Date getDateNascimento() {
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDateNascimento(Date dateNascimento) {
-		this.dataNascimento = dateNascimento;
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 
 	@Override
