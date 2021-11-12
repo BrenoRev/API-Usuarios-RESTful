@@ -1,5 +1,6 @@
 package com.devrev.apirest.repository;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -23,6 +24,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	
 	@Query(value = "SELECT e FROM Usuario e WHERE e.email = ?1")
 	Usuario findUserByEmail(String email);
+	
+	@Transactional
+	@Modifying
+	@Query(value = "UPDATE Usuario set senha = ?1 WHERE email = ?2", nativeQuery = true)
+	void updateSenha(String senha, String email);
 	
 	@Transactional
 	@Modifying
