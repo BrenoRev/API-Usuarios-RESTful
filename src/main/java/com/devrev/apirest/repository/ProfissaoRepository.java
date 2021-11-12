@@ -9,4 +9,5 @@ import com.devrev.apirest.model.Profissao;
 @Repository
 public interface ProfissaoRepository extends JpaRepository<Profissao, Long>{
 
+	
 }

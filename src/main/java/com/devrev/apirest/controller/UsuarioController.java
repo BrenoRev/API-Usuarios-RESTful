@@ -26,8 +26,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.devrev.apirest.model.Profissao;
 import com.devrev.apirest.model.Usuario;
 import com.devrev.apirest.model.UsuarioDTO;
+import com.devrev.apirest.repository.ProfissaoRepository;
 import com.devrev.apirest.repository.UsuarioRepository;
 import com.devrev.apirest.service.ImplementacaoUserDetailsService;
 
@@ -44,6 +46,8 @@ public class UsuarioController {
 	@Autowired
 	private ImplementacaoUserDetailsService usuarioService;
 	
+	@Autowired
+	private ProfissaoRepository profissaoRepository;
 	
 	@GetMapping(value = "/{id}" , produces = "application/json")
 	public ResponseEntity<UsuarioDTO> getId(@PathVariable(value = "id") Long id) {
@@ -121,7 +125,8 @@ public class UsuarioController {
 		usuarioAntigo.setDataNascimento(usuario.getDataNascimento());
 		usuarioAntigo.setEmail(usuario.getEmail());
 		usuarioAntigo.setSalario(usuario.getSalario());
-		usuarioAntigo.setProfissao(usuario.getProfissao());
+		Profissao p = profissaoRepository.findById(usuario.getProfissao().getId()).get();
+		usuarioAntigo.setProfissao(p);
 		usuarioRepository.save(usuarioAntigo);
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
