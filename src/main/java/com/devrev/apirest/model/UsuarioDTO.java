@@ -1,11 +1,13 @@
 package com.devrev.apirest.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -25,7 +27,13 @@ public class UsuarioDTO implements Serializable{
 	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
 	private LocalDate userDataNascimento;
 	
-	private Profissao profissao;
+	private Profissao userProfissao;
+	
+	private BigDecimal userSalario;
+	
+	@Column(unique = true)
+	@Email
+	private String userEmail;
 	
 	public UsuarioDTO(Usuario usuario) {
 		this.id = usuario.getId();
@@ -33,36 +41,56 @@ public class UsuarioDTO implements Serializable{
 		this.userNome = usuario.getNome();
 		this.userCpf = usuario.getCpf();
 		this.userDataNascimento = usuario.getDataNascimento();
-		this.profissao = usuario.getProfissao();
+		this.userProfissao = usuario.getProfissao();
+		this.userSalario = usuario.getSalario();
+		this.userEmail = usuario.getEmail();
 	}
 	
 	// Padrão DTO para imprimir todos
 	
-	public UsuarioDTO(Long id,String login, String nome, String cpf, LocalDate dataNascimento, Profissao profissao) {
+	public UsuarioDTO(Long id, String login, String nome, String cpf, LocalDate dataNascimento, Profissao profissao, BigDecimal salario, String email) {
 		this.id = id;
 		this.userLogin = login;
 		this.userNome = nome;
 		this.userCpf = cpf;
 		this.userDataNascimento = dataNascimento;
-		this.profissao = profissao;
+		this.userProfissao = profissao;
+		this.userSalario = salario;
+		this.userEmail = email;
 	}
 	
 	
 	
+	public Profissao getUserProfissao() {
+		return userProfissao;
+	}
+
+	public void setUserProfissao(Profissao userProfissao) {
+		this.userProfissao = userProfissao;
+	}
+
+	public BigDecimal getUserSalario() {
+		return userSalario;
+	}
+
+	public void setUserSalario(BigDecimal userSalario) {
+		this.userSalario = userSalario;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+
 	public LocalDate getUserDataNascimento() {
 		return userDataNascimento;
 	}
 
 	public void setUserDataNascimento(LocalDate userDataNascimento) {
 		this.userDataNascimento = userDataNascimento;
-	}
-
-	public Profissao getProfissao() {
-		return profissao;
-	}
-
-	public void setProfissao(Profissao profissao) {
-		this.profissao = profissao;
 	}
 
 	public String getUserCpf() {

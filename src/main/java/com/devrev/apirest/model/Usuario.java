@@ -20,8 +20,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
 
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -47,6 +50,7 @@ public class Usuario implements UserDetails{
 	private String cpf;
 	
 	@JsonFormat(pattern="dd/MM/yyyy")
+	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private LocalDate dataNascimento;
 	
 	
@@ -54,6 +58,10 @@ public class Usuario implements UserDetails{
 	private Profissao profissao;
 	
 	private BigDecimal salario;
+	
+	@Column(unique = true)
+	@Email
+	private String email;
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	// Criar uma tabela no banco de dados com o id do usuario e o id da role que ele tem
@@ -119,6 +127,15 @@ public class Usuario implements UserDetails{
 	}	
 
 	
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public BigDecimal getSalario() {
 		return salario;
 	}

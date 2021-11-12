@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.devrev.apirest.model.Profissao;
 import com.devrev.apirest.model.Usuario;
 import com.devrev.apirest.model.UsuarioDTO;
 import com.devrev.apirest.repository.UsuarioRepository;
@@ -66,7 +65,7 @@ public class UsuarioController {
 		List<Usuario> listUsuario= usuarioRepository.findAll();
 		List<UsuarioDTO> listarDTO = new ArrayList<>();
 		listUsuario.forEach((user) -> {
-			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf(), user.getDataNascimento(), user.getProfissao()));
+			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf(), user.getDataNascimento(), user.getProfissao(), user.getSalario(), user.getEmail()));
 		});
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}
@@ -119,10 +118,10 @@ public class UsuarioController {
 		usuarioAntigo.setLogin(usuario.getLogin());
 		usuarioAntigo.setNome(usuario.getNome());
 		usuarioAntigo.setCpf(usuario.getCpf());
-		Profissao p = new Profissao();
-		p.setId(usuario.getProfissao().getId());
-		p.setDescricao(usuario.getProfissao().getDescricao());
-		usuarioAntigo.setProfissao(p);
+		usuarioAntigo.setDataNascimento(usuario.getDataNascimento());
+		usuarioAntigo.setEmail(usuario.getEmail());
+		usuarioAntigo.setSalario(usuario.getSalario());
+		usuarioAntigo.setProfissao(usuario.getProfissao());
 		usuarioRepository.save(usuarioAntigo);
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
@@ -140,7 +139,7 @@ public class UsuarioController {
 		List<Usuario> listUsuario= usuarioRepository.findUserByName(nome);
 		List<UsuarioDTO> listarDTO = new ArrayList<>();
 		listUsuario.forEach((user) -> {
-			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf(), user.getDataNascimento(), user.getProfissao()));
+			listarDTO.add(new UsuarioDTO(user.getId() ,user.getLogin(), user.getNome(), user.getCpf(), user.getDataNascimento(), user.getProfissao(), user.getSalario(), user.getEmail()));
 		});
 		return new ResponseEntity<List<UsuarioDTO>>(listarDTO, HttpStatus.OK);
 	}
