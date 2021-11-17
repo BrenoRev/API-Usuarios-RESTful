@@ -1,6 +1,5 @@
 package com.devrev.apirest.controller;
 
-import java.util.Calendar;
 import java.util.Random;
 
 import javax.mail.MessagingException;

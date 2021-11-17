@@ -1,9 +1,15 @@
 package com.devrev.apirest.controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -32,6 +38,9 @@ import com.devrev.apirest.model.UsuarioDTO;
 import com.devrev.apirest.repository.ProfissaoRepository;
 import com.devrev.apirest.repository.UsuarioRepository;
 import com.devrev.apirest.service.ImplementacaoUserDetailsService;
+import com.devrev.apirest.service.RelatorioService;
+
+import net.sf.jasperreports.engine.JRException;
 
 @RequestMapping("/usuario")
 @RestController
@@ -49,11 +58,15 @@ public class UsuarioController {
 	@Autowired
 	private ProfissaoRepository profissaoRepository;
 	
+	@Autowired
+	private RelatorioService relatorioService;
+	
 	@GetMapping(value = "/{id}" , produces = "application/json")
 	public ResponseEntity<UsuarioDTO> getId(@PathVariable(value = "id") Long id) {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		return new ResponseEntity<UsuarioDTO>(new UsuarioDTO(usuario.get()), HttpStatus.OK);
 	}
+	
 	
 	/* Vamos Supor que o carregamento de usuario seja um processo lento
 	 e queremos controler ele com cache par agilizar o processo */
@@ -122,6 +135,7 @@ public class UsuarioController {
 		usuarioAntigo.setLogin(usuario.getLogin());
 		usuarioAntigo.setNome(usuario.getNome());
 		usuarioAntigo.setCpf(usuario.getCpf());
+		
 		usuarioAntigo.setDataNascimento(usuario.getDataNascimento());
 		usuarioAntigo.setEmail(usuario.getEmail());
 		usuarioAntigo.setSalario(usuario.getSalario());
@@ -161,5 +175,19 @@ public class UsuarioController {
 		
 		return new ResponseEntity<Page<Usuario>>(list, HttpStatus.OK);
 		
+	}
+	 
+	@GetMapping(value = "/relatorio/{id}", produces = "application/text")
+	public ResponseEntity<String> downloadRelatorio(@PathVariable("id") Integer id, HttpServletRequest httpServletRequest) throws SQLException, JRException{
+		
+		// Adicionando os parametros de busca do jasper relatorios
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("ID", id);
+		
+		byte[] pdf = relatorioService.gerarRelatorio("relatorio-usuario", httpServletRequest.getServletContext(), param);
+		
+		String base64Pdf = "data:application/pdf;base64,"+ Base64.encodeBase64String(pdf);
+		
+		return new ResponseEntity<String>(base64Pdf, HttpStatus.OK);
 	}
 }

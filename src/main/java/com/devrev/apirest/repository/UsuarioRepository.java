@@ -1,6 +1,5 @@
 package com.devrev.apirest.repository;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.transaction.Transactional;
