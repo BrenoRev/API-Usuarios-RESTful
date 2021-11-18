@@ -103,6 +103,7 @@
  <hr>
  
   [GET] Buscar usuario por nome - https://api-restrevdev.herokuapp.com/api-rest/usuario/name/?nome
+  <br>
   [GET] Buscar usuario por nome com paginação - https://api-restrevdev.herokuapp.com/api-rest/usuario/name/?{nome}/page/?{page}
  <details>
     <br>
