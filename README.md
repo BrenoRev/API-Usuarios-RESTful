@@ -1,5 +1,7 @@
 # API de Cadastro de Usuários no Sistema
-
+<h3> Back-end sendo consumido por um front-end SPA em Angular </h3>
+<h4>http://angular-usuarios.herokuapp.com/login</h4>
+<h5>https://github.com/BrenoRev/UsuariosAngular</h5>
 <hr>
  <p>Ferramentas utilizadas</p>
         <ul>
