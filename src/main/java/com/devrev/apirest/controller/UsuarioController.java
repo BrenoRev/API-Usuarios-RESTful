@@ -92,11 +92,6 @@ public class UsuarioController {
 	public ResponseEntity<Page<Usuario>> getAll(@PathVariable("pagina") int pagina) throws InterruptedException {
 		int size = 5;
 
-		if (pagina == 0) {
-			size = 6;
-		} else {
-			size = 5;
-		}
 		PageRequest page = PageRequest.of(pagina, size, Sort.by("nome"));
 		Page<Usuario> listarDTO = usuarioRepository.findAll(page);
 
@@ -105,8 +100,8 @@ public class UsuarioController {
 
 	@PostMapping(value = "/register", produces = "application/json")
 	public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario) {
-		
-		usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha())); 
+
+		usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 		usuarioRepository.save(usuario);
 		usuarioService.insereAcessoPadrao(usuario.getId());
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
@@ -129,16 +124,32 @@ public class UsuarioController {
 	@PatchMapping(value = "/patch")
 	public ResponseEntity<Usuario> atualizarParcial(@RequestBody Usuario usuario) {
 		Usuario usuarioAntigo = usuarioRepository.getById(usuario.getId());
-		usuarioAntigo.setId(usuario.getId());
-		usuarioAntigo.setLogin(usuario.getLogin());
-		usuarioAntigo.setNome(usuario.getNome());
-		usuarioAntigo.setCpf(usuario.getCpf());
+		if (usuario.getId() != null) {
+			usuarioAntigo.setId(usuario.getId());
+		}
+		if (usuario.getLogin() != null) {
+			usuarioAntigo.setLogin(usuario.getLogin());
+		}
+		if (usuario.getNome() != null) {
+			usuarioAntigo.setNome(usuario.getNome());
+		}
+		if (usuario.getCpf() != null) {
+			usuarioAntigo.setCpf(usuario.getCpf());
+		}
+		if (usuario.getDataNascimento() != null) {
+			usuarioAntigo.setDataNascimento(usuario.getDataNascimento());
+		}
+		if (usuario.getEmail() != null) {
+			usuarioAntigo.setEmail(usuario.getEmail());
+		}
+		if (usuario.getSalario() != null) {
+			usuarioAntigo.setSalario(usuario.getSalario());
+		}
+		if (usuario.getProfissao() != null && usuario.getProfissao().getId() != null && usuario.getProfissao().getId() != 0) {
+			Profissao p = profissaoRepository.findById(usuario.getProfissao().getId()).get();
+			usuarioAntigo.setProfissao(p);
+		}
 		
-		usuarioAntigo.setDataNascimento(usuario.getDataNascimento());
-		usuarioAntigo.setEmail(usuario.getEmail());
-		usuarioAntigo.setSalario(usuario.getSalario());
-		Profissao p = profissaoRepository.findById(usuario.getProfissao().getId()).get();
-		usuarioAntigo.setProfissao(p);
 		usuarioRepository.save(usuarioAntigo);
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
